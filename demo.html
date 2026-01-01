@@ -1,42 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CDP Network Chaos Demo</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1>Network Chaos Target</h1>
-        <p class="subtitle">Reload this page while the script is running to visualize network resilience.</p>
+      <h1>Network Chaos Target</h1>
+      <p class="subtitle">
+        Reload this page while the script is running to visualize network
+        resilience.
+      </p>
+      <div>
         <button onclick="window.location.reload()" class="btn btn-outline">
-            Reload Page
+          Reload
         </button>
+      </div>
     </header>
 
     <main class="grid-container">
-        <!-- Using random unsplash images to ensure network requests -->
-        <div class="card"><img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&q=80" alt="Lion">
-        </div>
-        <div class="card"><img src="https://plus.unsplash.com/premium_photo-1664298515793-1451ed489d95?q=80&w=1425"
-                alt="Tiger"></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=400&q=80"
-                alt="Otter"></div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400&q=80" alt="Bear">
-        </div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1470093851219-69951fcbb533?w=400&q=80" alt="Bird">
-        </div>
-        <div class="card"><img src="https://images.unsplash.com/photo-1456926631375-92c8ce872def?w=400&q=80"
-                alt="Leopard"></div>
+      <!-- Using random unsplash images to ensure network requests -->
+      <figure class="card">
+        <img
+          src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&q=80"
+          alt="Lion"
+        />
+      </figure>
+      <figure class="card">
+        <img
+          src="https://plus.unsplash.com/premium_photo-1664298515793-1451ed489d95?q=80&w=1425"
+          alt="Tiger"
+        />
+      </figure>
+      <figure class="card">
+        <img
+          src="https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=400&q=80"
+          alt="Otter"
+        />
+      </figure>
+      <figure class="card">
+        <img
+          src="https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=400&q=80"
+          alt="Bear"
+        />
+      </figure>
+      <figure class="card">
+        <img
+          src="https://images.unsplash.com/photo-1470093851219-69951fcbb533?w=400&q=80"
+          alt="Bird"
+        />
+      </figure>
+      <figure class="card">
+        <img
+          src="https://images.unsplash.com/photo-1456926631375-92c8ce872def?w=400&q=80"
+          alt="Leopard"
+        />
+      </figure>
     </main>
 
     <footer class="status-footer">
-        <span class="status-indicator"></span>
-        <p>Check the console script output for request interception details.</p>
+      <span class="status-indicator"></span>
+      <p>Check the console script output for request interception details.</p>
     </footer>
-</body>
-
+  </body>
 </html>

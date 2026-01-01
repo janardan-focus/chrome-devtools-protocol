@@ -2,19 +2,21 @@ const chromeLauncher = require('chrome-launcher');
 const CDP = require('chrome-remote-interface');
 const path = require('path');
 
+let client = null;
+let chrome = null;
+
 (async function () {
     console.log('Starting Chrome...');
 
     // 1. Launch Chrome with remote debugging enabled
-    const chrome = await chromeLauncher.launch({
+    chrome = await chromeLauncher.launch({
         startingUrl: 'about:blank',
-        // chromeFlags: ['--headless=new'] // Use headless for clean demo output, remove to see UI
+        chromeFlags: ['--auto-open-devtools-for-tabs', "--window-size=1920,1080"] // Use headless for clean demo output, remove to see UI
     });
 
     console.log(`Chrome debugging port: ${chrome.port}`);
 
     // 2. Connect to the browser using CDP
-    let client;
     try {
         client = await CDP({ port: chrome.port });
 
@@ -24,8 +26,7 @@ const path = require('path');
         // Enable events for domains
         await Promise.all([
             Network.enable(),
-            Page.enable(),
-            Runtime.enable() 
+            Page.enable()
         ]);
 
         console.log('CDP Connected & Domains Enabled.');
@@ -33,7 +34,7 @@ const path = require('path');
         // 3. Set up Network Interception
         // We want to intercept all requests to demonstrate control
         await Network.setRequestInterception({
-            patterns: [{ urlPattern: 'unsplash.com' }] // Intercept everything
+            patterns: [{ urlPattern: '*unsplash*' }] // Intercept everything
         });
 
         // 4. Handle intercepted requests
@@ -75,17 +76,21 @@ const path = require('path');
         console.log(`Navigating to ${demoPath}...`);
         await Page.navigate({ url: demoPath });
 
-        // Wait a bit to observe logs
-
-
-        console.log('Demo finished. Closing.');
-
     } catch (err) {
         console.error('Error:', err);
-    } finally {
-        if (client) {
-            await client.close();
-        }
+    } 
+})();
+
+async function cleanup() {
+    console.log('Cleaning up...');
+    if (client) {
+        client.close();
+    }
+    if (chrome) {
         await chrome.kill();
     }
-})();
+}
+
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
+process.on('SIGQUIT', cleanup);
