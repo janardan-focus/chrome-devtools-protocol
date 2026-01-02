@@ -21,7 +21,7 @@ let chrome = null;
         client = await CDP({ port: chrome.port });
 
         // Extract domains we need
-        const { Network, Page, Runtime } = client;
+        const { Network, Page } = client;
 
         // Enable events for domains
         await Promise.all([
