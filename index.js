@@ -21,12 +21,13 @@ let chrome = null;
         client = await CDP({ port: chrome.port });
 
         // Extract domains we need
-        const { Network, Page } = client;
+        const { Network, Page, Performance, Runtime } = client;
 
         // Enable events for domains
         await Promise.all([
             Network.enable(),
-            Page.enable()
+            Page.enable(),
+            Performance.enable()
         ]);
 
         console.log('CDP Connected & Domains Enabled.');
@@ -75,6 +76,34 @@ let chrome = null;
         const demoPath = 'file://' + path.join(__dirname, 'demo.html');
         console.log(`Navigating to ${demoPath}...`);
         await Page.navigate({ url: demoPath });
+
+        // 6. Wait for page load and inject Performance metrics into the UI
+        Page.loadEventFired(async () => {
+            console.log('Page loaded. Fetching Performance metrics...');
+            
+            const metricsResult = await Performance.getMetrics();
+            console.log('Performance Metrics:', metricsResult);
+            
+            // Format metrics as a readable JSON object
+            const metricsObject = {};
+            metricsResult.metrics.forEach(metric => {
+                metricsObject[metric.name] = metric.value;
+            });
+            
+            const metricsJson = JSON.stringify(metricsObject, null, 2);
+            
+            // Inject metrics into the page UI
+            await Runtime.evaluate({
+                expression: `
+                    const metricsElement = document.getElementById('performance-metrics');
+                    if (metricsElement) {
+                        metricsElement.textContent = ${JSON.stringify(metricsJson)};
+                    }
+                `
+            });
+            
+            console.log('Performance metrics injected into UI.');
+        });
 
     } catch (err) {
         console.error('Error:', err);
